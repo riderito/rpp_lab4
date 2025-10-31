@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      run: git clone https://github.com/riderito/rpp_lab4.git
+      uses: actions/checkout@v4
     
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
