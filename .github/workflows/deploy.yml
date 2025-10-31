@@ -1,24 +1,34 @@
 name: Deploy to Pages through release
 
+# Триггер запуска - при публикации нового релиза
 on:
   release:
     types: [published]
 
 jobs:
   deploy:
+    # Запуск джобы на последней версии Ubuntu
     runs-on: ubuntu-latest
     steps:
+
+    # Получение кода из репозитория
     - name: Checkout
       uses: actions/checkout@v4
-      
+
+    # Деплой в поддиректорию с номером релиза для обеспечения доступности прошлых версий
     - name: Deploy version to v... subdirectory
       uses: peaceiris/actions-gh-pages@v4
       with:
+        # Токен для аутентификации (без него не запушит в ветку)
         github_token: ${{ secrets.GITHUB_TOKEN }}
+        # Указываем, откуда брать файлы для публикации
         publish_dir: ./
+        # Целевая директория, куда сохранить файлы
         destination_dir: ./v${{ github.event.release.tag_name }}
+        # Существующие файлы сохраняются (при false ветка перезаписывается)
         keep_files: true
-        
+
+    # Деплой последней версии в корневую директорию
     - name: Deploy latest to root
       uses: peaceiris/actions-gh-pages@v4
       with:
